@@ -1,0 +1,26 @@
+.vc-gif-folders-manager {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.vc-gif-folders-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.vc-gif-folders-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px;
+    border-radius: 8px;
+    background: var(--background-secondary);
+}
+
+.vc-gif-folders-name {
+    flex: 1;
+    min-width: 0;
+    font-weight: 600;
+}
