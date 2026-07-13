@@ -38,7 +38,11 @@ normal Vencord AppData installation. In other words, you must "manually" install
    pnpm build
    pnpm inject
    ```
-4. Select your Discord installation in the installer and restart Discord.
+4. Run the installer (the one in Vencord source you downloaded - not the separate downloadable one)
+("--branch canary" is optional for Discord Canary)
+   ```sh
+   node scripts/runInstaller.mjs -- --install --branch canary
+   ```
 5. Open **Discord Settings → Vencord → Plugins**, then enable:
    - **GifFolders**
    - **HideDefaultGifCategories** (optional)
