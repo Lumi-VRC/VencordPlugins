@@ -33,7 +33,7 @@ let unsubscribe: (() => void) | undefined;
 export default definePlugin({
     name: "GifFolders",
     description: "Organize GIFs into local, named folders in Discord's GIF picker.",
-    authors: [{ name: "Local User", id: 0n }],
+    authors: [{ name: "@lumi_vrc", id: 0n }],
     tags: ["Media", "Customisation"],
     settings,
 
