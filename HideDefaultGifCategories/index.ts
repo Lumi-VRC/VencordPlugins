@@ -11,7 +11,7 @@ import { refreshViews } from "../GifFolders/categoryView";
 export default definePlugin({
     name: "HideDefaultGifCategories",
     description: "Hides Discord's default GIF categories while preserving Favorites and custom GIF folders.",
-    authors: [{ name: "Local User", id: 0n }],
+    authors: [{ name: "@lumi_vrc", id: 0n }],
     tags: ["Media", "Customisation"],
     dependencies: ["GifFolders"],
 
