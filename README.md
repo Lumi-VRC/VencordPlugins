@@ -143,7 +143,5 @@ Close Canary completely and run:
 node scripts/runInstaller.mjs -- --install --branch canary
 ```
 
-## License
-
-Licensed under the GNU General Public License v3.0 or later
-(`GPL-3.0-or-later`). See `LICENSE`.
+Contact @lumi_vrc on discord for limited support
+I will not handhold you through the install if you've never used Vencord before. Go ask ChatGPT dumb questions.
