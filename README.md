@@ -1,6 +1,12 @@
 # GIF Folders for Vencord
-Organize Discord GIFs into named folders. The optional
-`HideDefaultGifCategories` plugin hides Discord's shit built-in gif folders for easier access to your custom folders.
+Organize your Discord GIFs into custom named folders.
+
+<img width="505" height="200" alt="image" src="https://github.com/user-attachments/assets/e8e3aee3-f1bf-4965-ac63-94eb528a78cf" />
+
+<img width="738" height="534" alt="image" src="https://github.com/user-attachments/assets/84ac922d-5d64-4950-9569-bb76d84aac75" />
+
+
+The optional `HideDefaultGifCategories` plugin hides Discord's shit built-in gif folders for easier access to your custom folders.
 ## Requirements
 - [Git](https://git-scm.com/downloads)
 - [Node.js 22 or newer](https://nodejs.org/)
