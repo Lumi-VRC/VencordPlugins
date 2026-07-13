@@ -25,6 +25,8 @@ Normal Vencord installations cannot load loose plugin files. Custom plugins
 must be copied into a Vencord source checkout and compiled into a custom build.
 The generic downloadable Vencord installer cannot build these plugins.
 
+In other words, you must "Manually" download and install vencord in order to *have* a "userplugins" folder, in order to use custom plugins.
+
 Only install custom plugins whose source code you trust.
 
 ## Requirements
@@ -50,7 +52,7 @@ npm install --global pnpm
 
 2. Create `Vencord/src/userplugins` if it does not already exist.
 
-3. Copy the plugin folders from `VencordPlugins` into
+3. Copy the plugin folders from `VencordPlugins` (this repository) into
    `Vencord/src/userplugins`:
 
    ```text
@@ -79,7 +81,7 @@ npm install --global pnpm
 
    Select Discord Stable, PTB, or Canary when prompted.
 
-   Direct Discord Canary installation:
+   Direct installation (alternative to using the installer included in the files) (optional "--branch canary" for Discord Canary):
 
    ```sh
    node scripts/runInstaller.mjs -- --install --branch canary
