@@ -69,14 +69,32 @@ export function getFolder(id: string) {
     return folders.find(folder => folder.id === id);
 }
 
-export function getAssignedUrls() {
-    return new Set(folders.flatMap(folder => folder.gifs.map(gif => gif.url)));
+export function getGifKey(url: string) {
+    try {
+        const parsed = new URL(url);
+        return `${parsed.hostname.toLowerCase()}${decodeURIComponent(parsed.pathname)}`;
+    } catch {
+        return url.split(/[?#]/, 1)[0];
+    }
+}
+
+function isSameGif(gif: Gif, url: string) {
+    const key = getGifKey(url);
+    return getGifKey(gif.url) === key || getGifKey(gif.src) === key;
+}
+
+export function getAssignedGifKeys() {
+    return new Set(
+        folders.flatMap(folder =>
+            folder.gifs.flatMap(gif => [getGifKey(gif.url), getGifKey(gif.src)])
+        )
+    );
 }
 
 export function getFolderIdsForGif(gifUrl: string) {
     return new Set(
         folders
-            .filter(folder => folder.gifs.some(gif => gif.url === gifUrl))
+            .filter(folder => folder.gifs.some(gif => isSameGif(gif, gifUrl)))
             .map(folder => folder.id)
     );
 }
@@ -112,7 +130,7 @@ export async function setGifInFolder(folderId: string, gif: Gif, included: boole
     folders = folders.map(folder => {
         if (folder.id !== folderId) return folder;
 
-        const withoutGif = folder.gifs.filter(item => item.url !== gif.url);
+        const withoutGif = folder.gifs.filter(item => !isSameGif(item, gif.url));
         return {
             ...folder,
             gifs: included ? [gif, ...withoutGif] : withoutGif
