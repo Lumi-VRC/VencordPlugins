@@ -27,15 +27,27 @@ let activeFolder: { id: string; name: string; } | null = null;
 let pickerInstance: any = null;
 let gridInstance: any = null;
 let fullFavorites: any[] = [];
+let indexedFavorites: any[] | null = null;
+let favoriteIndex = new Map<string, any>();
+
+function indexFavorites(favorites: any[]) {
+    if (favorites === indexedFavorites) return;
+
+    const nextIndex = new Map<string, any>();
+    for (const favorite of favorites) {
+        for (const url of [favorite.url, favorite.src]) {
+            if (url) nextIndex.set(getGifKey(url), favorite);
+        }
+    }
+
+    indexedFavorites = favorites;
+    favoriteIndex = nextIndex;
+}
 
 function resolveCurrentFavorite(stored: Gif) {
-    const storedKeys = new Set([getGifKey(stored.url), getGifKey(stored.src)]);
-
-    return fullFavorites.find(candidate =>
-        [candidate.url, candidate.src]
-            .filter(Boolean)
-            .some(url => storedKeys.has(getGifKey(url)))
-    ) ?? stored;
+    return favoriteIndex.get(getGifKey(stored.url))
+        ?? favoriteIndex.get(getGifKey(stored.src))
+        ?? stored;
 }
 
 function getFolderGifs(id: string) {
@@ -147,10 +159,13 @@ export function getCategoryTiles(original: CategoryTile[], instance?: any) {
     if (instance) gridInstance = instance;
     activeFolder = null;
 
-    const customTiles = getFolders().map(folder => {
-        const gifs = getFolderGifs(folder.id);
-        return folderTile(folder.id, folder.name, gifs);
-    });
+    const customTiles = getFolders().map(folder =>
+        folderTile(
+            folder.id,
+            folder.name,
+            folder.gifs.length ? [resolveCurrentFavorite(folder.gifs[0])] : []
+        )
+    );
     const unsorted = getFolderGifs(UNSORTED_FOLDER_ID);
 
     return [
@@ -169,6 +184,7 @@ export function getCategoryTiles(original: CategoryTile[], instance?: any) {
 export function getFavorites(original: any[]) {
     if (!activeFolder) {
         fullFavorites = original;
+        indexFavorites(original);
         return original;
     }
 
