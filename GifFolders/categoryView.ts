@@ -7,7 +7,7 @@
 import { isPluginEnabled } from "@api/PluginManager";
 
 import { openGifPickerContextMenu } from "./contextMenu";
-import { getAssignedUrls, getFolder, getFolders } from "./data";
+import { getAssignedGifKeys, getFolder, getFolders, getGifKey, Gif } from "./data";
 import { openFolderNameModal } from "./modals";
 
 const FAVORITES_RESULT_TYPE = "Favorites";
@@ -28,13 +28,27 @@ let pickerInstance: any = null;
 let gridInstance: any = null;
 let fullFavorites: any[] = [];
 
+function resolveCurrentFavorite(stored: Gif) {
+    const storedKeys = new Set([getGifKey(stored.url), getGifKey(stored.src)]);
+
+    return fullFavorites.find(candidate =>
+        [candidate.url, candidate.src]
+            .filter(Boolean)
+            .some(url => storedKeys.has(getGifKey(url)))
+    ) ?? stored;
+}
+
 function getFolderGifs(id: string) {
     if (id === UNSORTED_FOLDER_ID) {
-        const assigned = getAssignedUrls();
-        return fullFavorites.filter(gif => !assigned.has(gif.url ?? gif.src));
+        const assigned = getAssignedGifKeys();
+        return fullFavorites.filter(gif =>
+            ![gif.url, gif.src]
+                .filter(Boolean)
+                .some(url => assigned.has(getGifKey(url)))
+        );
     }
 
-    return getFolder(id)?.gifs ?? [];
+    return getFolder(id)?.gifs.map(resolveCurrentFavorite) ?? [];
 }
 
 function folderTile(id: string, name: string, gifs: any[]): CategoryTile {
@@ -133,9 +147,10 @@ export function getCategoryTiles(original: CategoryTile[], instance?: any) {
     if (instance) gridInstance = instance;
     activeFolder = null;
 
-    const customTiles = getFolders().map(folder =>
-        folderTile(folder.id, folder.name, folder.gifs)
-    );
+    const customTiles = getFolders().map(folder => {
+        const gifs = getFolderGifs(folder.id);
+        return folderTile(folder.id, folder.name, gifs);
+    });
     const unsorted = getFolderGifs(UNSORTED_FOLDER_ID);
 
     return [
