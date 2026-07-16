@@ -67,7 +67,10 @@ function renderFolderSubmenu(
                 id="vc-gif-folders-create"
                 label="New Folder"
                 color="brand"
-                action={() => openFolderNameModal()}
+                action={() => {
+                    ContextMenuApi.closeContextMenu();
+                    setTimeout(() => openFolderNameModal(), 0);
+                }}
             />
             {folders.length > 0 && <Menu.MenuSeparator />}
             {folders.map(folder => {
